@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: task_management_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  api_gateway:
+    build:
+      context: ./api_gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - task_service
+      - user_service
+      - notification_service
+      - file_attachment_service
+      - tag_service
+
+  task_service:
+    build:
+      context: ./task_service
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+
+  user_service:
+    build:
+      context: ./user_service
+    ports:
+      - "8002:8002"
+    depends_on:
+      - db
+
+  notification_service:
+    build:
+      context: ./notification_service
+    ports:
+      - "8003:8003"
+    depends_on:
+      - db
+
+  file_attachment_service:
+    build:
+      context: ./file_attachment_service
+    ports:
+      - "8004:8004"
+    depends_on:
+      - db
+
+  tag_service:
+    build:
+      context: ./tag_service
+    volumes:
+      - ./tag_service:/tag_service
+    ports:
+      - "8005:8005"
+    depends_on:
+      - db
