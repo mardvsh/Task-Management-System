@@ -1,38 +1,116 @@
 # Task Management System
 
-![Task Management](https://img.shields.io/badge/Task-Management-blue.svg) ![Microservices](https://img.shields.io/badge/Microservices-Architecture-green.svg) ![Docker](https://img.shields.io/badge/Docker-Compose-orange.svg)
+Task Management System — это backend-система для управления задачами, реализованная в виде набора сервисов с разделением ответственности и возможностью масштабирования.
 
-Task Management System - это проект, разработанный для обеспечения эффективного управления задачами в различных контекстах.
+Проект фокусируется на архитектуре backend-сервисов, обработке запросов и расширяемости системы.
 
-## 📌 Модули
+---
 
-### 🚀 api_gateway
-Модуль **api_gateway** отвечает за маршрутизацию API-запросов к другим микросервисам.
+## Архитектура (кратко)
 
-### ✅ task_service
-Модуль **task_service** определяет маршруты для создания, чтения, обновления и удаления задач.
+Система построена по принципу разделения на сервисы:
 
-### 👤 user_service
-Модуль **user_service** отвечает за создание и управление пользователями, а также за аутентификацию и выдачу токенов доступа.
+api_gateway → маршрутизация запросов  
+↓  
+task_service → бизнес-логика задач  
+user_service → пользователи и аутентификация  
+notification_service → уведомления  
+file_attachment_service → работа с файлами  
+tag_service → теги  
 
-### 🔔 notification_service
-Модуль **notification_service** предоставляет функции для отправки уведомлений пользователям.
+Каждый сервис отвечает за свою зону ответственности и может масштабироваться независимо.
 
-### 📂 file_attachment_service
-Модуль **file_attachment_service** реализует загрузку и управление файлами.
+---
 
-### 🏷 tag_service
-Модуль **tag_service** управляет добавлением и получением тегов для задач.
+## Основные возможности
 
-## 📁 Дополнительные файлы
+- CRUD-операции для задач
+- управление пользователями и аутентификация
+- система тегов
+- загрузка и хранение файлов
+- отправка уведомлений
+- централизованная маршрутизация через API Gateway
 
-- **📜 docker-compose.yml** - Конфигурация для запуска всех микросервисов с помощью Docker Compose.
-- **🗄 init_db.sql** - Скрипт для инициализации базы данных.
+---
 
-## 🧪 Тестирование
+## Технологии
 
-В папке **tests/** находятся unit-тесты, предназначенные для проверки работоспособности API и его компонентов.
+- Backend: Python (REST API)
+- Архитектура: service-based / microservices-ready
+- База данных: PostgreSQL
+- Контейнеризация: Docker, Docker Compose
 
-## ⚠️ Важно
-Этот проект является примером и требует доработок для полноценного использования в продакшене. 🚀
+---
 
+## Как запустить
+
+git clone https://github.com/mardvsh/Task-Management-System.git  
+cd Task-Management-System  
+
+docker compose up --build -d  
+
+Проверить статус:  
+docker compose ps  
+
+---
+
+## Остановка
+
+docker compose stop  
+
+docker compose down  
+
+docker compose down -v  
+
+---
+
+## Полезные команды
+
+docker compose logs -f  
+
+docker compose logs -f task_service  
+
+---
+
+## Тестирование
+
+pytest  
+
+---
+
+## Архитектурные решения
+
+- Разделение на слои (handlers / services / storage)
+- Изоляция бизнес-логики внутри сервисов
+- Возможность горизонтального масштабирования
+- Подготовка к внедрению:
+  - кеширования (Redis)
+  - асинхронной обработки (Kafka / очереди)
+  - rate limiting
+
+---
+
+## Возможные улучшения
+
+- Добавление Redis для кеширования
+- Внедрение Kafka для событийной модели
+- Расширение системы аутентификации (JWT refresh, RBAC)
+- Мониторинг (Prometheus + Grafana)
+- Логирование (ELK stack)
+
+---
+
+## English Quick Overview
+
+Task Management System is a backend service-oriented application designed for managing tasks, users, and related entities.
+
+It demonstrates:
+- service decomposition
+- REST API design
+- scalable backend architecture
+
+---
+
+## Key Takeaway
+
+This project focuses not only on functionality but on backend architecture, scalability, and system design, making it a foundation for production-grade services.
